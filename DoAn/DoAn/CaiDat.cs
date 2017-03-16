@@ -290,6 +290,41 @@ namespace DoAn
             return this.tu;
         }
 
+        public override string ChuyenUnicodeToUTF8()
+        {
+            byte[] utf16 = Encoding.Unicode.GetBytes(this.tu);
+            byte[] utf8 = Encoding.Convert(Encoding.Unicode, Encoding.UTF8, utf16);
+            string strutf8 = "";
+
+            for (int i = 0;i < utf8.Length;i++)
+            {
+                byte[] tam = new byte[2] { utf8[i], 0 };
+                strutf8 += BitConverter.ToChar(tam, 0);
+            }
+
+            return strutf8;
+        }
+
+        public override string ChuyenUTF8ToUniCode()
+        {
+            byte[] utf8 = Encoding.UTF8.GetBytes(this.tu);
+            byte[] utf16 = Encoding.Convert(Encoding.UTF8, Encoding.Unicode, utf8); // lần 1
+            byte[] u = new byte[utf16.Length / 2];
+            string strUtf16 = "";
+            int j = 0;
+            for (int i = 0;i < utf16.Length; i++)
+            {
+                u[j] = utf16[i];
+                byte[] tam = new byte[2] { utf16[i], utf16[i + 1] };
+                strUtf16 += BitConverter.ToChar(tam,0);
+                i++;
+                j++;
+            }
+
+            byte[] cv = Encoding.Convert(Encoding.UTF8, Encoding.Unicode, u); // lần 2
+            return Encoding.Unicode.GetString(cv);
+        }
+
         private string XacDinhDau(int kihieudau)
         {
             string kq;

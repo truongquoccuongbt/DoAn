@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace DoAn
@@ -16,7 +17,9 @@ namespace DoAn
             TuVung a = new CaiDat(input);
             //String chuoi = "phụ âm đầu: " + a.PhuAmDau + "\r\n" + "Nguyên âm: " + a.NguyenAm + "\r\n" + "Phụ âm cuối: " + a.PhuAmCuoi +
             //                "\r\n" + "Dau: " + a.Dau;
-            textBox2.Text = a.XoaPhuAmCuoi();
+
+
+            textBox2.Text = a.ChuyenUTF8ToUniCode();
         }
     }
 }

@@ -160,5 +160,8 @@ namespace DoAn
         //      Nếu không có trả về rỗng.
         public abstract String TachDauThanh();
 
+        public abstract String ChuyenUnicodeToUTF8();
+
+        public abstract String ChuyenUTF8ToUniCode();
     }
 }

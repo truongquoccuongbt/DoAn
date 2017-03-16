@@ -1,0 +1,9 @@
+c:\users\cuong\documents\visual studio 2015\Projects\DoAn\DoAn\bin\Debug\DoAn.exe.config
+c:\users\cuong\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.csprojResolveAssemblyReference.cache
+c:\users\cuong\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.Properties.Resources.resources
+c:\users\cuong\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.csproj.GenerateResource.Cache
+C:\Users\CUONG\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.Form1.resources
+C:\Users\CUONG\documents\visual studio 2015\Projects\DoAn\DoAn\bin\Debug\DoAn.exe
+C:\Users\CUONG\documents\visual studio 2015\Projects\DoAn\DoAn\bin\Debug\DoAn.pdb
+C:\Users\CUONG\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.exe
+C:\Users\CUONG\documents\visual studio 2015\Projects\DoAn\DoAn\obj\Debug\DoAn.pdb

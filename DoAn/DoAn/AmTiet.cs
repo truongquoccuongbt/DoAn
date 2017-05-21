@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace DoAn
         protected String nguyen_am;
         protected String phu_am_cuoi;
         protected String dau_thanh;
+        protected Dictionary<string, string> tu_dien;
 
         public string amTiet
         {
@@ -86,12 +88,31 @@ namespace DoAn
             nguyen_am = String.Empty;
             phu_am_cuoi = String.Empty;
             dau_thanh = String.Empty;
+            tu_dien = new Dictionary<string, string>();
+            KhoiTaoTuDien();
+        }
+
+        public void KhoiTaoTuDien()
+        {
+            string duongDan = Path.Combine(Directory.GetCurrentDirectory(), "../../syllables.txt");
+
+            FileStream file = new FileStream(duongDan, FileMode.Open);
+            StreamReader reader = new StreamReader(file, Encoding.Unicode);
+            string dong;
+
+            while ((dong = reader.ReadLine()) != null)
+            {
+                tu_dien.Add(dong, "");
+            }
+            reader.Close();
         }
 
         public AmTiet(String am)
         {
             this.am_tiet = am;
+            tu_dien = new Dictionary<string, string>();
             phanTich();
+            KhoiTaoTuDien();
             if (!kiemTraAmTiengViet())
             {
                 phu_am_dau = String.Empty;
@@ -215,5 +236,7 @@ namespace DoAn
         /// <param name="phu_am"></param>
         /// <returns></returns>
         public abstract String[] layTungPhuAm(string phu_am);
+
+        public abstract AmTiet ghepTu(string phu_am_dau, string nguyen_am, string nguyen_am_cuoi, string dau);
     }
 }

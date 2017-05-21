@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -100,7 +101,7 @@ namespace DoAn
             this.phuAmCuoi = str[2];
         }
 
-        private string phucHoiDauThanh(String nguyenAm)
+        private string phucHoiDauThanh(String nguyenAm, string dau)
         {
             String[] mangKyTu = new String[]
            {
@@ -130,7 +131,7 @@ namespace DoAn
                 "yýỳỷỹỵ" ,
                 "YÝỲỶỸỴ"
            };
-            int kiHieuDau = timKiHieuDau(this.dau);
+            int kiHieuDau = timKiHieuDau(dau);
             String chuoi = nguyenAm;
             if (nguyenAm.Length == 1)
             {
@@ -237,7 +238,7 @@ namespace DoAn
                     tu = tmp;
                 }
             }
-            if (dau == null) this.dau = String.Empty;
+            if (dau == null) this.dau = "N";
             return tu;
         }
 
@@ -252,10 +253,10 @@ namespace DoAn
 
             }
             string[] tam = new string[3];
-            String str_phuAmDau = "ch|gh|gi|kh|ngh|ng|nh|ph|qu|th|tr|b|c|d|đ|g|h|k|l|m|n|p|q|r|s|t|v|x|)?";
-            String str_phuAmDauHoa = "^(?<a>Ch|Gh|Gi|Kh|Ng|Ngh|Nh|Ph|Qu|Th|Tr|B|C|D|Đ|G|H|K|L|M|N|P|Q|R|S|T|V|X";
-            String str_nguyenAmDon = "a|ă|â|e|ê|i|y|o|ô|ơ|u|ư|A|Ă|Â|E|Ê|I|Y|O|Ô|Ơ|U|Ư)?";
-            String str_nguyenAmDoi = "ai|ao|au|âu|ay|ây|eo|êu|ia|iê|yê|iu|oa|oă|oe|oi|ôi|ơi|oo|ôô|ua|uă|uâ|ưa|uê|ui|ưi|uo|uô|uơ|ươ|ưu|uy|";
+            String str_phuAmDau = "|ch|gh|gi|kh|ngh|ng|nh|ph|th|tr|b|c|d|đ|g|h|k|l|m|n|p|q|r|s|t|v|x|)?";
+            String str_phuAmDauHoa = "^(?<a>Ch|Gh|G|Kh|Ngh|Ng|Nh|Ph|Qu|Th|Tr|B|C|D|Đ|G|H|K|L|M|N|P|Q|R|S|T|V|X";
+            String str_nguyenAmDon = "|a|ă|â|e|ê|i|y|o|ô|ơ|u|ư|A|Ă|Â|E|Ê|I|Y|O|Ô|Ơ|U|Ư)?";
+            String str_nguyenAmDoi = "ai|ao|au|âu|ay|ây|eo|êu|ia|iê|yê|iu|oa|oă|oe|oi|ôi|ơi|oo|ôô|ua|uă|uâ|ưa|uê|ui|ưi|uo|uô|uơ|ươ|ưu|uy|iô";
             String str_nguyenAmBaHoa = "Iêu|Yêu|Oai|Oao|Oay|Oeo|Uao|Uây|Uôi|Ươi|Ươu|Uya|Uyê|Uyu|";
             String str_nguyenAmBa = "(?<b>iêu|yêu|oai|oao|oay|oeo|uao|uây|uôi|ươi|ươu|uya|uyê|uyu|";
             String str_phuAmCuoi = "(?<c>ch|ng|nh|m|n|t|c|p|)?";
@@ -288,14 +289,14 @@ namespace DoAn
         public override string xoaPhuAmCuoi()
         {
             string ketqua = "";
-            ketqua = this.phuAmDau + phucHoiDauThanh(this.nguyenAm);
+            ketqua = this.phuAmDau + phucHoiDauThanh(this.nguyenAm, this.dau);
             return ketqua;
         }
 
         public override string xoaPhuAmDau()
         {
             string ketqua = "";
-            ketqua = phucHoiDauThanh(this.nguyenAm) + this.phuAmCuoi;
+            ketqua = phucHoiDauThanh(this.nguyenAm, this.dau) + this.phuAmCuoi;
             return ketqua; 
         }
 
@@ -388,7 +389,7 @@ namespace DoAn
                     kq = "J";
                     break;
                 default:
-                    kq = String.Empty;
+                    kq = "N";
                     break;
             }
             return kq;
@@ -431,6 +432,7 @@ namespace DoAn
 
         public override bool kiemTraAmTiengViet()
         {
+            
             if (this.phu_am_dau == String.Empty && this.nguyen_am == String.Empty && this.phu_am_dau == String.Empty)
             {
                 return false;
@@ -440,157 +442,25 @@ namespace DoAn
             {
                 return false;
             }
+       
             if (!kiemTraPhuAmDau(this.phu_am_dau) || !kiemTraNguyenAm(this.nguyen_am) || !kiemTraPhuAmCuoi(this.phu_am_cuoi))
             {
                 return false;
             }
-            if (!kiemTraCauTruc())
+            if (!kiemTraAmViCoNghia(this.am_tiet))
             {
                 return false;
             }
             return true;
-        }
-
-        private bool kiemTraCauTruc()
-        {
-            string[] tmp = layTungNguyenAm(this.nguyen_am);
-            if (!kiemTraNguyenAmVaPhuAmDau(tmp[0],this.phuAmDau))
-            {
-                return false;
-            }
-            else if (!kiemTraNguyenAmVaPhuAmCuoi(this.nguyen_am,this.phu_am_cuoi))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private bool kiemTraNguyenAmVaPhuAmCuoi(string nguyen_am, string phu_am_cuoi)
-        {
-            nguyen_am = chuyenChuThuong(nguyen_am);
-            phu_am_cuoi = chuyenChuThuong(phu_am_cuoi);
-
-            if (nguyen_am == "y" || nguyen_am == "ai" || nguyen_am == "ao" || nguyen_am == "au" || nguyen_am == "iu" ||
-                nguyen_am == "âu" || nguyen_am == "ay" || nguyen_am == "ây" || nguyen_am == "eo" ||
-                nguyen_am == "êu" || nguyen_am == "ia" || nguyen_am == "oi" || nguyen_am == "ôi" ||
-                nguyen_am == "ơi" || nguyen_am == "ua" || nguyen_am == "uă" || nguyen_am == "ui" ||
-                nguyen_am == "ưi" || nguyen_am == "uo" || nguyen_am == "iêu" || nguyen_am == "yêu" ||
-                nguyen_am == "oai" || nguyen_am == "oao" || nguyen_am == "oay" || nguyen_am == "oeo" ||
-                nguyen_am == "uao" || nguyen_am == "uây" || nguyen_am == "uôi" || nguyen_am == "ươi" ||
-                nguyen_am == "ươu" || nguyen_am == "uya" || nguyen_am == "uyu" || nguyen_am == "ưa" || nguyen_am == "ưu")
-            {
-                if (phu_am_cuoi == "") return true;
-                return false;
-            }
-            
-            switch (phu_am_cuoi)
-            {
-                case "ch":   // kiểm những vần ghép được
-                    if (nguyen_am == "a" || nguyen_am == "ê" || nguyen_am == "i" || nguyen_am == "oa" ||
-                        nguyen_am == "uy")
-                    {
-                        return true;
-                    }
-                    return false;
-                case "ng": // kiểm tra những vần ghép không được
-                    if (nguyen_am == "â" || nguyen_am == "ê" || nguyen_am == "i" || nguyen_am == "ơ" ||
-                        nguyen_am == "iu" || nguyen_am == "uâ" || nguyen_am == "ưa" || nguyen_am == "ưu" ||
-                        nguyen_am == "uy" || nguyen_am == "uyê")
-                    {
-                        return false;
-                    }
-                    return true;
-                case "nh": // kiểm những vần ghép được
-                    if (nguyen_am == "a" || nguyen_am == "ê" || nguyen_am == "i" || nguyen_am == "oa" ||
-                        nguyen_am == "uy")
-                    {
-                        return true;
-                    }
-                    return false;
-                case "m":    // kiếm những vần không ghép được
-                    if (nguyen_am == "ă" || nguyen_am == "â" || nguyen_am == "iê" || nguyen_am == "iu" ||
-                        nguyen_am == "oo" || nguyen_am == "ôô" || nguyen_am == "uâ" || nguyen_am == "uê" ||
-                        nguyen_am == "uơ" || nguyen_am == "uy" || nguyen_am == "uyê")
-                    {
-                        return false;
-                    }
-                    return true;
-                case "n":   // kiếm những vần không ghép được
-                    if (nguyen_am == "â")
-                    {
-                        return false;
-                    }
-                    return true;
-                case "t":       // kiếm những vần không ghép được
-                    if (nguyen_am == "oo" || nguyen_am == "ôô" || nguyen_am == "uơ" ||
-                        nguyen_am == "uy")
-                    {
-                        return false;
-                    }
-                    return true;
-                case "c":       // kiếm những vần không ghép được
-                    if (nguyen_am == "ê" || nguyen_am == "i" || nguyen_am == "yê" || nguyen_am == "uyê" ||
-                        nguyen_am == "oe" || nguyen_am == "uê" || nguyen_am == "uy")
-                    {
-                        return false;
-                    }
-                    return true;
-                case "p":            // kiểm tra những vần ghép không được
-                    if (nguyen_am == "ươ" || nguyen_am == "u" || nguyen_am == "uyp")
-                    {
-                        return true;
-                    }
-                    return false;
-                default:
-                    if (nguyen_am == "ă" || nguyen_am == "â" || nguyen_am == "iê" || nguyen_am == "yê" ||
-                        nguyen_am == "oă" || nguyen_am == "oo" || nguyen_am == "ôô" || nguyen_am == "uâ" ||
-                        nguyen_am == "uê" || nguyen_am == "uô" || nguyen_am == "ươ" || nguyen_am == "uyê")
-                    {
-                        return false;
-                    }
-                    return true;
-            }
-        }
-
-        private bool kiemTraNguyenAmVaPhuAmDau(string nguyen_am, string phu_Am_Dau)
-        {
-            phu_Am_Dau = chuyenChuThuong(phu_Am_Dau);
-            nguyen_am = chuyenChuThuong(nguyen_am);
-            bool kt = true;
-
-            switch (nguyen_am)
-            {
-                case "a": case "ă" : case "â":case "o": case "ô": case "ơ":case "u":case "ư":
-                    if (phu_Am_Dau == "gh" || phu_Am_Dau == "k" || phu_Am_Dau == "ngh" || phu_Am_Dau == "q")
-                    {
-                        kt = false;
-                    }
-                    break;
-                case "e": case "ê":
-                    if (phu_Am_Dau == "c" || phu_Am_Dau == "g" || phu_Am_Dau == "q")
-                    {
-                        kt = false;
-                    }
-                    break;
-                case "i":
-                    if (phu_Am_Dau == "c" || phu_Am_Dau == "ng" || phu_Am_Dau == "q")
-                    {
-                        kt = false;
-                    }
-                    break;
-            }
-            return kt;
         }
 
         private bool kiemTraPhuAmDau(string phuAm)
         {
-            if (kiemTraInHoa())
-            {
-                phuAm = chuyenChuThuong(phuAm);
-            }
+           
+            phuAm = chuyenChuThuong(phuAm);
 
             if (phuAm == "") return true;
-            string phuAmDon = "bcdđghklmnpqrstvx";
+            string phuAmDon = "bcdđghklmnpqrstvxBCDĐGHKLMNPQRSTVX";
             string[] phuAmDoi = new string[]
             {
                 "ch","gh","gi","kh","ng","nh","ph","qu","th","tr",
@@ -639,7 +509,7 @@ namespace DoAn
             if (phuAm == "") return true;
             string[] phuAmCuoi = new string[]
             {
-                "m","n","nh","ch","ng","t","c"
+                "m","n","nh","ch","ng","t","c","p"
             };
             for (int i = 0;i < phuAmCuoi.Length;i++)
             {
@@ -657,13 +527,14 @@ namespace DoAn
             {
                 nguyenAm = chuyenChuThuong(nguyenAm);
             }
+
             string[] nguyenAmDon = new string[]
             {
                 "a","ă","â","e","ê","i","y","o","ô","ơ","u","ư"
             };
             string[] nguyenAmDoi = new string[]
             {
-                "ai","ao","au","âu","ây","eo","êu","ia","iê","yê",
+                "ai","ao","au","âu","ây","eo","êu","ia","iê","yê","ay","ây",
                 "iu","oa","oă","oe","oi","ôi","ơi","oo","ôô","ua","uă",
                 "uâ","ưa","uê","ui","ưi","uo","uô","uơ","ươ","ưu","uy"
             };
@@ -747,6 +618,42 @@ namespace DoAn
                 str[i] = phu_am[i].ToString();
             }
             return str;
+        }
+
+        private bool kiemTraAmViCoNghia (string am_tiet)
+        {
+            am_tiet = chuyenChuThuong(am_tiet);
+            var key = tu_dien.FirstOrDefault(x => x.Key == am_tiet).Key;
+        
+            if (key == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override AmTiet ghepTu(string phu_am_dau, string nguyen_am, string phu_am_cuoi, string dau)
+        {
+            string nguyen_am_dau = phucHoiDauThanh(nguyen_am, dau);
+            string tu_moi = phu_am_dau + nguyen_am_dau + phu_am_cuoi;
+            this.am_tiet = tu_moi;
+            this.phu_am_dau = phu_am_dau;
+            this.nguyen_am = nguyen_am;
+            this.phu_am_cuoi = phu_am_cuoi;
+            this.dau_thanh = dau;
+            if (this.kiemTraAmTiengViet())
+            {
+                return this;
+            }
+            else
+            {
+                this.am_tiet = String.Empty;
+                this.phu_am_dau = String.Empty;
+                this.nguyen_am = String.Empty;
+                this.phu_am_cuoi = String.Empty;
+                this.dau_thanh = String.Empty;
+                throw new Exception("Đây không phải tiếng Việt");
+            }
         }
     }
 }

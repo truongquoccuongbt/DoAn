@@ -8,91 +8,110 @@ namespace DoAn
 {
     class AmVi
     {
-        private string phien_am;
-        private static Dictionary<string,string> dsPhuAm_MB = new Dictionary<string, string>();
-        private static Dictionary<string, string> dsPhuAm_MN = new Dictionary<string, string>();
-        private static Dictionary<string, string> dsNguyenAm = new Dictionary<string, string>();
-        private int vung_mien;
-        public AmVi(string phien_am, int vung_mien)
+        private AmTiet am_tiet;
+        private String phien_am;
+        private Dictionary<String, String[]> ds_phien_am = new Dictionary<String, String[]>();
+
+        public AmVi()
         {
+            am_tiet = new CaiDat();
+            phien_am = String.Empty;
+        }
+
+        public AmVi(AmTiet am_tiet, String phien_am)
+        {
+            this.am_tiet = am_tiet;
             this.phien_am = phien_am;
-            this.vung_mien = vung_mien;
-            khoiTaoDsAm();
         }
 
-        private void khoiTaoDsAm()
+        private void khoiTaoDanhSachPhienAm()
         {
-            // Miền Bắc
-            dsPhuAm_MB.Add("/ɓ/", "b");
-            dsPhuAm_MB.Add("/k/", "c");
-            dsPhuAm_MB.Add("/t͡ɕ/", "ch");
-            dsPhuAm_MB.Add("/z/", "d");
-            dsPhuAm_MB.Add("/ɗ/", "đ");
-            dsPhuAm_MB.Add("/ɣ/", "g");
-            dsPhuAm_MB.Add("/z/", "g");
-            dsPhuAm_MB.Add("/ɣ/", "gh");
-            dsPhuAm_MB.Add("/z/", "gi");
-            dsPhuAm_MB.Add("/h/", "h");
-            dsPhuAm_MB.Add("/k/", "k");
-            dsPhuAm_MB.Add("/x/", "kh");
-            dsPhuAm_MB.Add("/l/", "l");
-            dsPhuAm_MB.Add("/m/", "m");
-            dsPhuAm_MB.Add("/n/", "n");
-            dsPhuAm_MB.Add("/ŋ/", "ng");
-            dsPhuAm_MB.Add("/ŋ/", "ngh");
-            dsPhuAm_MB.Add("/ɲ/", "nh");
-            dsPhuAm_MB.Add("/p/", "p");
-            dsPhuAm_MB.Add("/ɓ/", "p");
-            dsPhuAm_MB.Add("/f/", "ph");
-            dsPhuAm_MB.Add("/k/", "q");
-            dsPhuAm_MB.Add("/kw/", "qu");
-            dsPhuAm_MB.Add("/z/", "r");
-            dsPhuAm_MB.Add("/r/", "r");
-            dsPhuAm_MB.Add("/s/", "s");
-            dsPhuAm_MB.Add("/t/", "t");
-            dsPhuAm_MB.Add("/tʰ/", "th");
-            dsPhuAm_MB.Add("/t͡ɕ/", "tr");
-            dsPhuAm_MB.Add("/v/", "v");
-            dsPhuAm_MB.Add("/s/", "x");
+            // Phien am cua phu am
+            ds_phien_am.Add("b", new String[] { "b" });
+            ds_phien_am.Add("c", new String[] { "c" });
+            ds_phien_am.Add("ch", new String[] { "ch" });
+            ds_phien_am.Add("d", new String[] { "d" });
+            ds_phien_am.Add("đ", new String[] { "dd" });
+            ds_phien_am.Add("g", new String[] { "g" });
+            ds_phien_am.Add("gh", new String[] { "g" });
+            ds_phien_am.Add("d", new String[] { "gi" });
+            ds_phien_am.Add("h", new String[] { "h" });
+            ds_phien_am.Add("k", new String[] { "k" });
+            ds_phien_am.Add("kh", new String[] { "kh" });
+            ds_phien_am.Add("l", new String[] { "l" });
+            ds_phien_am.Add("m", new String[] { "m" });
+            ds_phien_am.Add("n", new String[] { "n" });
+            ds_phien_am.Add("ng", new String[] { "ng" });
+            ds_phien_am.Add("ngh", new String[] { "ngh" });
+            ds_phien_am.Add("nh", new String[] { "nh" });
+            ds_phien_am.Add("p", new String[] { "p" });
+            ds_phien_am.Add("ph", new String[] { "ph" });
+            ds_phien_am.Add("qu", new String[] { "kw" });
+            ds_phien_am.Add("r", new String[] { "r" });
+            ds_phien_am.Add("s", new String[] { "s" });
+            ds_phien_am.Add("t", new String[] { "t" });
+            ds_phien_am.Add("th", new String[] { "th" });
+            ds_phien_am.Add("tr", new String[] { "tr" });
+            ds_phien_am.Add("v", new String[] { "v" });
+            ds_phien_am.Add("x", new String[] { "x" });
 
-            // Miền Nam
-            dsPhuAm_MN.Add("/ɓ/", "b");
-            dsPhuAm_MN.Add("/k/", "c");
-            dsPhuAm_MN.Add("∅", "c");
-            dsPhuAm_MN.Add("/c/", "ch");
-            dsPhuAm_MN.Add("/j/", "d");
-            dsPhuAm_MN.Add("/ɗ/", "đ");
-            dsPhuAm_MN.Add("/ɣ/", "g");
-            dsPhuAm_MN.Add("/j/", "g");
-            dsPhuAm_MN.Add("/ɣ/", "gh");
-            dsPhuAm_MN.Add("/j/", "gi");
-            dsPhuAm_MN.Add("/h/", "h");
-            dsPhuAm_MN.Add("∅", "h");
-            dsPhuAm_MN.Add("/k/", "k");
-            dsPhuAm_MN.Add("/x/", "kh");
-            dsPhuAm_MN.Add("/l/", "l");
-            dsPhuAm_MN.Add("/m/", "m");
-            dsPhuAm_MN.Add("/n/", "n");
-            dsPhuAm_MN.Add("/ŋ/", "ng");
-            dsPhuAm_MN.Add("∅", "ng");
-            dsPhuAm_MN.Add("/ŋ/", "ngh");
-            dsPhuAm_MN.Add("/ɲ/", "nh");
-            dsPhuAm_MN.Add("/p/", "p");
-            dsPhuAm_MN.Add("/ɓ/", "p");
-            dsPhuAm_MN.Add("/f/", "ph");
-            dsPhuAm_MN.Add("∅", "q");
-            dsPhuAm_MN.Add("/w/", "qu");
-            dsPhuAm_MN.Add("/ɹ/", "r");
-            dsPhuAm_MN.Add("/r/", "r");
-            dsPhuAm_MN.Add("/ʐ/", "r");
-            dsPhuAm_MN.Add("/s/", "s");
-            dsPhuAm_MN.Add("/ʂ/", "s");
-            dsPhuAm_MN.Add("/t/", "t");
-            dsPhuAm_MN.Add("/tʰ/", "th");
-            dsPhuAm_MN.Add("/c/", "tr");
-            dsPhuAm_MN.Add("/ʈ͡ʂ/", "tr");
-            dsPhuAm_MN.Add("/j/", "v");
-            dsPhuAm_MN.Add("/s/", "x");
+            // Phien am cua nguyen am
+            ds_phien_am.Add("a", new String[] { "a", "ea" });
+            ds_phien_am.Add("ă", new String[] { "aw" });
+            ds_phien_am.Add("â", new String[] { "aa" });
+            ds_phien_am.Add("e", new String[] { "e" });
+            ds_phien_am.Add("ê", new String[] { "ee" });
+            ds_phien_am.Add("i", new String[] { "i" });
+            ds_phien_am.Add("y", new String[] { "i" });
+            ds_phien_am.Add("o", new String[] { "o", "oa" });
+            ds_phien_am.Add("ô", new String[] { "ô" });
+            ds_phien_am.Add("ơ", new String[] { "ow" });
+            ds_phien_am.Add("u", new String[] { "u" });
+            ds_phien_am.Add("ư", new String[] { "uw" });
+            ds_phien_am.Add("ai", new String[] { "aiz" });
+            ds_phien_am.Add("ao", new String[] { "auz" });
+            ds_phien_am.Add("au", new String[] { "auz" });
+            ds_phien_am.Add("âu", new String[] { "aauz" });
+            ds_phien_am.Add("ay", new String[] { "awiz" });
+            ds_phien_am.Add("ây", new String[] { "aaiz" });
+            ds_phien_am.Add("eo", new String[] { "euz" });
+            ds_phien_am.Add("êu", new String[] { "eeuz" });
+            ds_phien_am.Add("ia", new String[] { "ie" });
+            ds_phien_am.Add("iê", new String[] { "ie" });
+            ds_phien_am.Add("yê", new String[] { "ie" });
+            ds_phien_am.Add("iu", new String[] { "iuz" });
+            ds_phien_am.Add("oa", new String[] { "wa" });
+            ds_phien_am.Add("oă", new String[] { "waw" });
+            ds_phien_am.Add("oe", new String[] { "we" });
+            ds_phien_am.Add("oi", new String[] { "oiz" });
+            ds_phien_am.Add("ôi", new String[] { "ooiz" });
+            ds_phien_am.Add("ơi", new String[] { "owiz" });
+            ds_phien_am.Add("ua", new String[] { "uo" });
+            ds_phien_am.Add("oi", new String[] { "oiz" });
+            ds_phien_am.Add("uâ", new String[] { "waa" });
+            ds_phien_am.Add("ưa", new String[] { "wa" });
+            ds_phien_am.Add("uê", new String[] { "wee" });
+            ds_phien_am.Add("ui", new String[] { "uiz" });
+            ds_phien_am.Add("ưi", new String[] { "uwiz" });
+            ds_phien_am.Add("uô", new String[] { "uo" });
+            ds_phien_am.Add("uơ", new String[] { "wow" });
+            ds_phien_am.Add("ươ", new String[] { "wa" });
+            ds_phien_am.Add("ưu", new String[] { "uwuz" });
+            ds_phien_am.Add("uy", new String[] { "wi" });
+            ds_phien_am.Add("iêu", new String[] { "ieuz" });
+            ds_phien_am.Add("yêu", new String[] { "ieuz" });
+            ds_phien_am.Add("oai", new String[] { "waiz" });
+            ds_phien_am.Add("oay", new String[] { "wawiz" });
+            ds_phien_am.Add("oeo", new String[] { "weuz" });
+            ds_phien_am.Add("uây", new String[] { "waaiz" });
+            ds_phien_am.Add("uôi", new String[] { "uoiz" });
+            ds_phien_am.Add("ươi", new String[] { "waiz" });
+            ds_phien_am.Add("oi", new String[] { "oiz" });
+            ds_phien_am.Add("ươu", new String[] { "wauz" });
+            ds_phien_am.Add("uya", new String[] { "wie" });
+            ds_phien_am.Add("uyê", new String[] { "wie" });
+            ds_phien_am.Add("uyu", new String[] { "wiuz" });
         }
+
     }
 }
